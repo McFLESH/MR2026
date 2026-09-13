@@ -43,62 +43,72 @@ void bob_salary(const int year, const int month)
 
 void bob_car(const int year, const int month) 
 {
-    if (year >= 2030 && month >= 6 && bob.cash >= 500'000 && bob.salary >= 100'000 && bob.car == false) {
+    if (year >= 2030 || (year == 2030 && month >= 6) && bob.cash >= 500'000 && bob.salary >= 100'000 && bob.car == false) {
         bob.car = true;
         bob.cash -= 300'000;
     }
+
     if (bob.car == true) {
         bob.cash -= 50'000;  //затраты на авто: страховка, топливо, штраф и ТО    
-
     }
-    if (bob.cash <= 50'000 && bob.salary <= 100'000) {
-         bob.car = false;
+
+    if (bob.cash <= 50'000 && bob.salary <= 100'000 && bob.car == true) {
+        bob.car = false;
         bob.cash += 200'000;
     }
 }
 
-void bob_food(const int year, const int month) 
+void bob_food(const int year) 
 {
-    bob.cash -= 7'000 * (1+(year-2026)/100/**month*/);  
+    double inflation = 1.0;
+
+    for (int y = 2026; y < year; ++y) {
+        inflation *= 1.07; 
+    }
+
+    bob.cash -= (RUB) (7000*inflation);
 }
 
 void bob_rent(const int year, const int month) 
 {   
-    long int rent;
-
-    if (year <= 2027 && month <= 8) {
-        rent = 0;
-    }
-
-    if (year > 2027 && month > 8 && year <= 2028 && month <= 6) {
-        rent = 20'000;
-    }
-
-    if ((year > 2028 && month > 6 && year <= 2030 && month <= 4) || bob.flat == false) {
-        rent = 40'000;
-    }
+    long int rent = 0;
 
     if (bob.flat == true) {
         rent = 0;
+        return;
     }
 
+    if (year < 2027 || (year == 2027 && month <= 8)) {
+        rent = 0;
+    }
+    else if (year < 2028 || (year == 2028 && month <= 6)) {
+        rent = 20'000;
+    }
+    else if (year < 2030 || (year == 2030 && month <= 4) || bob.flat == false) {
+        rent = 40'000;
+    }
+    else {
+        rent = 0;
+    }
+    
     bob.cash -= rent;
 }
 
 void bob_home_bills(const int year, const int month)  
 {
-    long int bills;
+    long int bills = 0;
     
-    if (year <= 2028 && month <= 6) {
-        bills = 10'000;
+    if (year > 2033 || (year == 2033 && month >= 3) ) {
+        bills = 25'000;
     }
-
-    if (year <= 2030 && month <= 4) {
+    else if (year > 2030 || (year == 2030 && month >= 4) ) {
         bills = 20'000;
     }
-
-    if (year <= 2033 && month <= 3 ) {
-        bills = 25'000;
+    else if (year > 2028 || (year == 2028 && month >= 6) ) {
+        bills = 10'000;
+    }
+    else {
+        bills = 5'000;
     }
 
     bob.cash -= bills;
@@ -106,7 +116,7 @@ void bob_home_bills(const int year, const int month)
 
 void bob_mortgadge(const int year, const int month) 
 {
-    long int mortgadge;
+    long int mortgadge = 0;
 
     if (year >= 2033 && month >= 3 && bob.flat == false) {
         
@@ -115,7 +125,7 @@ void bob_mortgadge(const int year, const int month)
 
     }
 
-    if (bob.mortgadge > 0 && year < 2052 && month < 3) {
+    if (bob.mortgadge > 0 && year < 2052) {
 
         mortgadge = 70'000;
 
@@ -139,7 +149,7 @@ void simulation()
     int year = 2026;
     int month = 9;
 
-    while ( !  (year == 2027 && month == 9) ) {  // and --> &&   not --> !
+    while ( !  (year == 2027 && month == 3) ) {  // and --> &&   not --> !
 
         bob_salary(year, month);
         
@@ -147,7 +157,7 @@ void simulation()
         bob_mortgadge(year, month);
         bob_rent(year, month);
         bob_home_bills(year, month);
-        bob_food(year, month);
+        bob_food(year);
         //bob_dog(year, month);
         //food_bank_income(year, month);
         
@@ -168,12 +178,15 @@ void bob_init()
 {
     bob.cash = 20'000;
     bob.salary = 80'000;
+    bob.car = false;       //наличие машины
+    bob.flat = false;      // наличие квартиры
+    bob.mortgadge = 0;
 
 }
 
 void bob_print() 
 {
-    printf("Bob cash = %d\n", bob.cash);
+    printf("Bob cash = %llu\n", bob.cash);
 }
 
 

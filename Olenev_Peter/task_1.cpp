@@ -68,7 +68,7 @@ bool peter_promotion_at_work()
 {
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(5, 54*12);
+    std::uniform_int_distribution<int> dist(6, 54*12);
     return dist(gen) == 1;
 }
 
@@ -79,6 +79,15 @@ bool peter_dismissial_from_work()
     static std::mt19937 gen(rd());
     std::uniform_int_distribution<int> dist(1, 54*12);
     return dist(gen) == 1;
+}
+
+
+bool peter_disease()
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(12, 54*12);
+
 }
 
 

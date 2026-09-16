@@ -1,24 +1,114 @@
 #include <stdio.h>
+#include <random>
 
-//typedef RUB int; # for C, not C++
 using RUB = unsigned long long int;
 
 
 struct Person {
     RUB cash;
     RUB salary;
+    RUB total_gasoline_spent;
+    RUB total_transport_spent;
+    RUB total_car_repair_spent;
+
+    double car_break_chance;
+
+    bool car_break;
 };
 
 
-struct Person alice;
+Person alice;
 
 
-void alice_salary(const int year,const int month)
+void alice_salary(const int year, const int month)
 {
-    if(year == 2027 and month == 1) { //Promotion
-        alice.salary = 100'000;    
+    if (year == 2027 && month == 1) {
+        alice.salary = 100'000;    // Promotion
     }
+
     alice.cash += alice.salary;
+}
+
+
+void alice_gas()
+{
+    static std::random_device seed;
+    static std::mt19937 generator(seed());
+
+    std::uniform_int_distribution<RUB> gasoline_cost(8'000, 12'000);
+
+    if (alice.cash < 12'000) {
+        printf("Alice has no money for gasoline\n");
+    }
+    else {
+        const RUB spent = gasoline_cost(generator);
+
+        alice.cash -= spent;
+        alice.total_gasoline_spent += spent;
+    }
+}
+
+
+void alice_public_transport()
+{
+    const RUB transport_cost = 3'000;
+
+    if (alice.cash >= transport_cost) {
+        alice.cash -= transport_cost;
+        alice.total_transport_spent += transport_cost;
+    }
+    else {
+        printf("Alice cannot afford public transport\n");
+    }
+}
+
+
+void alice_car_break()
+{
+    static std::random_device seed;
+    static std::mt19937 generator(seed());
+
+    std::uniform_real_distribution<double> chance_roll(0.0, 1.0);
+    std::uniform_int_distribution<RUB> repair_cost(10'000, 100'000);
+
+    if (!alice.car_break &&
+        chance_roll(generator) < alice.car_break_chance)
+    {
+        alice.car_break = true;
+
+        alice.car_break_chance = 0.0;
+
+        printf("Alice's car broke down!\n");
+    }
+
+    if (alice.car_break) {
+
+        const RUB spent = repair_cost(generator);
+
+        if (alice.cash >= spent) {
+
+            alice.cash -= spent;
+            alice.total_car_repair_spent += spent;
+
+            alice.car_break = false;
+
+            printf("Car repair spent = %llu\n", spent);
+        }
+        else {
+            printf("Alice cannot afford car repair, she forced to use public transport\n");
+
+            alice_public_transport();
+        }
+    }
+    else {
+        alice_gas();
+
+        alice.car_break_chance += 0.01;
+
+        if (alice.car_break_chance > 1.0) {
+            alice.car_break_chance = 1.0;
+        }
+    }
 }
 
 
@@ -26,9 +116,11 @@ void simulation()
 {
     int year = 2026;
     int month = 9;
-    while (not (year == 2027 and month == 9)) {
-        
+
+    while (!(year == 2036 && month == 9)) {
+
         alice_salary(year, month);
+        alice_car_break();
         // alice_car();
         // alice_mortgadge();
         // alice_rent();
@@ -38,8 +130,8 @@ void simulation()
         // alice_bank_income();
         // bob_salary();
 
-
         ++month;
+
         if (month == 13) {
             ++year;
             month = 1;
@@ -48,21 +140,38 @@ void simulation()
 }
 
 
-
 void alice_init()
 {
     alice.cash = 20'000;
     alice.salary = 80'000;
+
+    alice.total_gasoline_spent = 0;
+    alice.total_transport_spent = 0;
+    alice.total_car_repair_spent = 0;
+
+    alice.car_break_chance = 0.01;
+    alice.car_break = false;
 }
 
 
 void alice_print()
 {
-    printf("Alice cash = %lld\n", alice.cash);
+    printf("\nTOTAL SIMULATION RESULTS\n");
+
+    printf("Alice cash = %llu\n", alice.cash);
+
+    printf("Total gasoline spent = %llu\n",
+           alice.total_gasoline_spent);
+
+    printf("Total public transport spent = %llu\n",
+           alice.total_transport_spent);
+
+    printf("Total car repair spent = %llu\n",
+           alice.total_car_repair_spent);
 }
 
-int main()
 
+int main()
 {
     alice_init();
 

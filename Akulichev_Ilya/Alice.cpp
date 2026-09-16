@@ -1,11 +1,51 @@
 #include <stdio.h>
 
 //tupedef int RUB;
-using RUB = int;
+using RUB = unsigned long long int;
+using USD = unsigned int;
 
-struct Person {
+struct Car { // Налог, ремонт, топливо, обслуживание
+    RUB repair;
+    RUB fuel;
+    RUB service;
+};
+
+struct Tax{
+    RUB car_tax;
+    RUB home_tax;
+    RUB land_tax;
+};
+
+struct Family {  // Еда, собака, одежда
+    RUB food;
+    RUB dog;
+    RUB clothes;
+};
+
+struct medicine { // Лекарства, зубы, болезни
+    RUB remedy;
+    RUB teeth;
+    RUB disease;
+};
+
+struct Home{ // Коммунальные услуги, ремонт, ипотека, аренда
+    RUB repair;
+    RUB mortgage;
+    RUB rent;
+    RUB rental;
+};
+
+struct Bank{ // Доход от банка, проценты по кредиту
+    RUB account_RUB;
+    USD account_USD;
+    RUB check;
+    RUB credit;
+};
+
+struct Person { // Зарплата, наличные, налоги на машины, расходы на семью, расходы на медицину, расходы на дом
     RUB cash;
     RUB salary;
+    RUB rental_income;
 };
 
 struct Person alice;
@@ -20,6 +60,7 @@ void alice_salary(const int year, const int month)
     alice.cash += alice.salary;
 }
 
+
 void simulation()
 {
     int year = 2026;
@@ -28,7 +69,6 @@ void simulation()
     while ( not ( year == 2036 and month == 9 ) )
     {
         alice_salary(year, month);
-        // alice_car;
         // alice_mortgadge();
         // alice_rent();
         // alice_home_bills();
@@ -43,13 +83,13 @@ void simulation()
             month = 1;
         }
     }
-}
+};
 
 void alice_init()
 {
     alice.cash = 20'000;
     alice.salary = 80'000;
-}
+};
 
 void alice_print()
 {

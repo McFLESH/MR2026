@@ -423,9 +423,124 @@ void bob_salary(const int month, const int year)
 }
 
 
+void alice_additional_income(int month, int year)
+{
+    if (random_event(0.3))
+    {
+        Alice.bank.balance += Alice.freelance_income_month;
+    }
+    if (Alice.car.has_rental && random_event(0.5))
+    {
+        Alice.bank.balance += Alice.car.rental_income;
+    }
+    if (Alice.property.owns_apartment && random_event(0.1))
+    {
+        Alice.bank.balance += Alice.rental_income_month;
+    }
+    if (month == 9 && year == 2027)
+    {
+        Alice.bank.balance += Alice.dividend_income_year;
+    }
+    if (month == 9 && year == 2028)
+    {
+        Alice.bank.balance += Alice.dividend_income_year * 1.02;
+    }
+    if (month == 9 && year == 2029)
+    {
+        Alice.bank.balance += Alice.dividend_income_year * 1.04;
+    }
+}
 
 
-void simulate_alice()
+void bob_additional_income(int month, int year)
+{
+    if (random_event(0.2))
+    {
+        Bob.bank.balance += Bob.freelance_income_month;
+    }
+    if (Bob.car.has_rental && random_event(0.3))
+    {
+        Bob.bank.balance += Bob.car.rental_income;
+    }
+    if (month == 11 && year == 2027)
+    {
+        Bob.bank.balance += Bob.dividend_income_year;
+    }
+    if (month == 11 && year == 2028)
+    {
+        Bob.bank.balance += Bob.dividend_income_year * 1.01;
+    }
+}
+
+
+
+void alice_deposit()
+{
+
+}
+
+
+void bob_deposit()
+{
+
+}
+
+
+void alice_loan_payments()
+{
+
+}
+
+
+void bob_loan_payments()
+{
+
+}
+
+
+void alice_property(int month)
+{
+
+}
+
+
+void bob_property(int month)
+{
+
+}
+
+
+void alice_food()
+{
+    
+}
+
+
+void bob_food()
+{
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void simulation_alice()
 {
     int year = 2026;
     int month = 9;
@@ -449,14 +564,14 @@ void simulate_alice()
         ++month;
         if (month == 13)
         {
-            month = 1;
             ++year;
+            month = 1;
         }
     }
 }
 
 
-void simulate_bob()
+void simulation_bob()
 {
     int year = 2026;
     int month = 9;
@@ -510,24 +625,24 @@ void alice_init()
     Alice.personal_loan = 0;
     Alice.personal_loan_month = 0;
 
-    Alice.work.salary_month = 180000;
+    Alice.work.salary_month = 180'000;
     Alice.work.promotion_factor = 1.2;
     Alice.work.position = "Manager";
     Alice.work.experience_years = 5;
     Alice.work.has_remote = true;
     Alice.work.vacation_days_used = 0;
     Alice.work.vacation_days_total = 28;
-    Alice.work.education_allowance_year = 50000;
+    Alice.work.education_allowance_year = 50'000;
     Alice.work.transport_compensation_month = 3000;
     Alice.work.phone_compensation_month = 1000;
     Alice.work.stock_options = 100;
     Alice.work.stock_price = 500;
 
-    Alice.bank.balance = 60000;
+    Alice.bank.balance = 60'000;
     Alice.bank.deposit = 0;
     Alice.bank.deposit_rate = 14.0;
     Alice.bank.credit_card_debt = 0;
-    Alice.bank.credit_card_limit = 300000;
+    Alice.bank.credit_card_limit = 300'000;
     Alice.bank.credit_rate = 25.0;
     Alice.bank.investment = 0;
     Alice.bank.crypto = 0;
@@ -537,7 +652,7 @@ void alice_init()
     Alice.bank.life_insurance = 0;
     Alice.bank.debit_card_cashback = 500;
 
-    Alice.car.value = 2400000;
+    Alice.car.value = 2'400'000;
     Alice.car.gas_month = 5000;
     Alice.car.maintenance_month = 3000;
     Alice.car.insurance_year = 96000;
@@ -553,8 +668,8 @@ void alice_init()
     Alice.car.rental_income = 0;
     Alice.car.has_rental = false;
 
-    Alice.cat.name = "Snezhok";
-    Alice.cat.color = "white";
+    Alice.cat.name = "Turbo";
+    Alice.cat.color = "grey-braun-red";
     Alice.cat.age = 3;
     Alice.cat.food_month = 6000;
     Alice.cat.vet_month = 3000;
@@ -567,7 +682,7 @@ void alice_init()
     Alice.cat.carrier_one_time = 2500;
     Alice.cat.carrier_bought = false;
 
-    Alice.property.rent_month = 40000;
+    Alice.property.rent_month = 40'000;
     Alice.property.utilities_month = 7000;
     Alice.property.internet_month = 1000;
     Alice.property.phone_month = 500;
@@ -617,7 +732,7 @@ void alice_init()
     Alice.health.perfume = 3000;
     Alice.health.ophthalmologist = 2000;
     Alice.health.surgeon = 5000;
-    Alice.health.hospital = 10000;
+    Alice.health.hospital = 10'000;
     Alice.health.physiotherapy = 1500;
     Alice.health.vitamins = 1000;
     Alice.health.dietary_supplements = 500;
@@ -643,7 +758,7 @@ void alice_init()
     Alice.transport.taxi_work = 1500;
     Alice.transport.taxi_weekend = 1000;
     Alice.transport.train = 3000;
-    Alice.transport.plane = 20000;
+    Alice.transport.plane = 20'000;
     Alice.transport.bus = 1000;
     Alice.transport.subway = 500;
     Alice.transport.bicycle = 200;
@@ -651,7 +766,7 @@ void alice_init()
     Alice.transport.rideshare = 400;
     Alice.transport.car_sharing = 600;
 
-    Alice.entertainment.travel = 80000;
+    Alice.entertainment.travel = 80'000;
     Alice.entertainment.hotel = 5000;
     Alice.entertainment.hostel = 1500;
     Alice.entertainment.camping = 1000;
@@ -678,7 +793,7 @@ void alice_init()
     Alice.entertainment.zoo = 400;
     Alice.entertainment.aquarium = 600;
 
-    Alice.misc.education = 20000;
+    Alice.misc.education = 20'000;
     Alice.misc.charity = 3000;
     Alice.misc.lottery = 200;
     Alice.misc.gambling = 0;
@@ -689,8 +804,8 @@ void alice_init()
     Alice.misc.bank_fee = 300;
     Alice.misc.atm_fee = 200;
     Alice.misc.postal = 300;
-    Alice.misc.furniture = 20000;
-    Alice.misc.electronics = 30000;
+    Alice.misc.furniture = 20'000;
+    Alice.misc.electronics = 30'000;
     Alice.misc.home_appliances = 15000;
     Alice.misc.kitchen = 3000;
     Alice.misc.bed_linen = 2000;
@@ -709,8 +824,8 @@ void alice_init()
     Alice.misc.domain_hosting = 100;
     Alice.misc.dating_sites = 300;
 
-    Alice.deposit_month = 40000;
-    Alice.emergency_fund = 50000;
+    Alice.deposit_month = 40'000;
+    Alice.emergency_fund = 50'000;
 }
 
 
@@ -732,16 +847,16 @@ void bob_init()
     Bob.freelance_income_month = 2000;
     Bob.rental_income_month = 0;
     Bob.dividend_income_year = 1000;
-    Bob.student_loan = 200000;
+    Bob.student_loan = 200'000;
     Bob.student_loan_month = 5000;
-    Bob.car.loan = 300000;
+    Bob.car.loan = 300'000;
     Bob.car.loan_month = 10000;
     Bob.personal_loan = 0;
     Bob.personal_loan_month = 0;
 
-    Bob.work.salary_month = 150000;
+    Bob.work.salary_month = 150'000;
     Bob.work.promotion_factor = 1.15;
-    Bob.work.position = "Developer";
+    Bob.work.position = "Mecatronic";
     Bob.work.experience_years = 7;
     Bob.work.has_remote = true;
     Bob.work.vacation_days_used = 0;
@@ -782,8 +897,8 @@ void bob_init()
     Bob.car.rental_income = 0;
     Bob.car.has_rental = false;
 
-    Bob.cat.name = "Mursic";
-    Bob.cat.color = "black";
+    Bob.cat.name = "Bulka";
+    Bob.cat.color = "orange";
     Bob.cat.age = 5;
     Bob.cat.food_month = 4000;
     Bob.cat.vet_month = 2000;
@@ -796,20 +911,20 @@ void bob_init()
     Bob.cat.carrier_one_time = 0;
     Bob.cat.carrier_bought = true;
 
-    Bob.property.rent_month = 30000;
+    Bob.property.rent_month = 30'000;
     Bob.property.utilities_month = 5000;
     Bob.property.internet_month = 800;
     Bob.property.phone_month = 400;
     Bob.property.insurance_year = 9600;
     Bob.property.has_mortgage = true;
     Bob.property.mortgage_month = 25000;
-    Bob.property.mortgage_debt = 1500000;
+    Bob.property.mortgage_debt = 1'500'000;
     Bob.property.property_tax_year = 12000;
     Bob.property.renovation_year = 0;
     Bob.property.furniture_year = 0;
     Bob.property.appliances_year = 0;
     Bob.property.owns_apartment = true;
-    Bob.property.apartment_value = 5000000;
+    Bob.property.apartment_value = 5'000'000;
 
     Bob.food.groceries = 12000;
     Bob.food.eating_out = 3000;
@@ -879,7 +994,7 @@ void bob_init()
     Bob.transport.rideshare = 0;
     Bob.transport.car_sharing = 0;
 
-    Bob.entertainment.travel = 50000;
+    Bob.entertainment.travel = 50'000;
     Bob.entertainment.hotel = 3000;
     Bob.entertainment.hostel = 1000;
     Bob.entertainment.camping = 600;
@@ -906,7 +1021,7 @@ void bob_init()
     Bob.entertainment.zoo = 0;
     Bob.entertainment.aquarium = 0;
 
-    Bob.misc.education = 10000;
+    Bob.misc.education = 10'000;
     Bob.misc.charity = 1000;
     Bob.misc.lottery = 100;
     Bob.misc.gambling = 500;
@@ -917,7 +1032,7 @@ void bob_init()
     Bob.misc.bank_fee = 200;
     Bob.misc.atm_fee = 150;
     Bob.misc.postal = 200;
-    Bob.misc.furniture = 10000;
+    Bob.misc.furniture = 10'000;
     Bob.misc.electronics = 15000;
     Bob.misc.home_appliances = 8000;
     Bob.misc.kitchen = 1500;
@@ -937,8 +1052,8 @@ void bob_init()
     Bob.misc.domain_hosting = 50;
     Bob.misc.dating_sites = 0;
 
-    Bob.deposit_month = 30000;
-    Bob.emergency_fund = 20000;
+    Bob.deposit_month = 30'000;
+    Bob.emergency_fund = 20'000;
 }
 
 
